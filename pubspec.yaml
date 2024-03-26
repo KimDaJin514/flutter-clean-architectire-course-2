@@ -39,6 +39,7 @@ dependencies:
   sqflite:
   json_annotation:
   freezed_annotation:
+  sqflite_common_ffi:
 
 dev_dependencies:
   flutter_test:
