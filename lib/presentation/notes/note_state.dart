@@ -3,6 +3,9 @@ import 'package:note_app/domain/model/note.dart';
 
 part 'note_state.freezed.dart';
 
+part 'note_state.g.dart';
+
+
 @freezed
 class NoteState with _$NoteState {
   factory NoteState({
