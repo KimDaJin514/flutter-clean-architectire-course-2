@@ -1,12 +1,12 @@
 sealed class OrderType<T> {
-  factory OrderType.ascending() = Ascending;
-  factory OrderType.descending() = Descending;
+  const factory OrderType.ascending() = Ascending;
+  const factory OrderType.descending() = Descending;
 }
 
 class Ascending<T> implements OrderType<T> {
-  Ascending();
+  const Ascending();
 }
 
 class Descending<T> implements OrderType<T> {
-  Descending();
+  const Descending();
 }

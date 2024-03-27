@@ -35,7 +35,9 @@ class NoteItem extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .headlineMedium!
-                      .copyWith(color: darkGray),
+                      .copyWith(color: darkGray).apply(
+                    color: darkGray
+                  ),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                 ),

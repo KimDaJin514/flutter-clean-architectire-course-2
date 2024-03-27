@@ -9,5 +9,6 @@ class NoteState with _$NoteState {
   factory NoteState({
     @Default([]) List<Note> notes,
     required NoteOrder order,
+    required bool isOrderSectionVisible,
   }) = _NoteState;
 }

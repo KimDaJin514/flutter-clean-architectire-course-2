@@ -13,9 +13,8 @@ class NotesViewModel with ChangeNotifier {
   final UseCases useCases;
 
   NoteState _state = NoteState(
-    order: NoteOrder.date(
-      OrderType.descending(),
-    ),
+    order: const NoteOrder.date(OrderType.descending()),
+    isOrderSectionVisible: false,
   );
 
   NoteState get state => _state;
@@ -36,6 +35,8 @@ class NotesViewModel with ChangeNotifier {
         _restoreNote();
       case ChangeOrder():
         _changeOrder(event.noteOrder);
+      case ToggleOrderSection():
+        _toggleOrderSection();
     }
   }
 
@@ -65,6 +66,14 @@ class NotesViewModel with ChangeNotifier {
 
   Future<void> _changeOrder(NoteOrder order) async {
     _state = state.copyWith(order: order);
+
+    await _loadNotes();
+  }
+
+  Future<void> _toggleOrderSection() async {
+    _state = state.copyWith(
+      isOrderSectionVisible: !state.isOrderSectionVisible,
+    );
 
     await _loadNotes();
   }

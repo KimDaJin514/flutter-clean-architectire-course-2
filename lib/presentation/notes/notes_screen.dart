@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:note_app/domain/model/note.dart';
+import 'package:note_app/domain/util/note_order.dart';
 import 'package:note_app/presentation/add_edit_note/add_edit_note_screen.dart';
 import 'package:note_app/presentation/notes/components/note_item.dart';
+import 'package:note_app/presentation/notes/components/order_section.dart';
 import 'package:note_app/presentation/notes/notes_event.dart';
 import 'package:note_app/presentation/notes/notes_viewmodel.dart';
 import 'package:note_app/ui/colors.dart';
@@ -23,7 +26,9 @@ class NotesScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              viewModel.onEvent(const NotesEvent.toggleOrderSection());
+            },
             icon: const Icon(Icons.sort),
           )
         ],
@@ -36,51 +41,62 @@ class NotesScreen extends StatelessWidget {
                   builder: (context) => const AddEditNoteScreen()));
 
           if (isSaved != null && isSaved) {
-            viewModel.onEvent(NotesEvent.loadNotes());
+            viewModel.onEvent(const NotesEvent.loadNotes());
           }
         },
         child: const Icon(Icons.add),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ListView(
-            children: state.notes
-                .map(
-                  (note) => GestureDetector(
-                    onTap: () async{
-                      bool? isSaved = await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AddEditNoteScreen(
-                              note: note,
-                            ),
-                          ));
+        child: ListView(children: [
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            child: state.isOrderSectionVisible ? OrderSection(
+              noteOrder: state.order,
+              onOrderChanged: (noteOrder) {
+                viewModel.onEvent(NotesEvent.changeOrder(noteOrder));
+              },
+            ) : Container(),
+          ),
+          ...state.notes
+              .map(
+                (note) =>
+                GestureDetector(
+                  onTap: () async {
+                    bool? isSaved = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              AddEditNoteScreen(
+                                note: note,
+                              ),
+                        ));
 
-                      if (isSaved != null && isSaved) {
-                        viewModel.onEvent(NotesEvent.loadNotes());
-                      }
+                    if (isSaved != null && isSaved) {
+                      viewModel.onEvent(const NotesEvent.loadNotes());
+                    }
+                  },
+                  child: NoteItem(
+                    note: note,
+                    onDeleteTap: () {
+                      viewModel.onEvent(NotesEvent.deleteNote(note));
+
+                      final snackBar = SnackBar(
+                        content: const Text('노트가 삭제되었습니다.'),
+                        action: SnackBarAction(
+                          label: '취소',
+                          onPressed: () {
+                            viewModel.onEvent(const NotesEvent.restoreNote());
+                          },
+                        ),
+                      );
+
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     },
-                    child: NoteItem(
-                      note: note,
-                      onDeleteTap: () {
-                        viewModel.onEvent(NotesEvent.deleteNote(note));
-
-                        final snackBar = SnackBar(
-                          content: const Text('노트가 삭제되었습니다.'),
-                          action: SnackBarAction(
-                            label: '취소',
-                            onPressed: () {
-                              viewModel.onEvent(NotesEvent.restoreNote());
-                            },
-                          ),
-                        );
-
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      },
-                    ),
                   ),
-                )
-                .toList()),
+                ),
+          )
+        ]),
       ),
     );
   }

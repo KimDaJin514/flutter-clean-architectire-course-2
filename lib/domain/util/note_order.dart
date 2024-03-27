@@ -1,22 +1,35 @@
+// import 'package:note_app/domain/util/order_type.dart';
+//
+// sealed class NoteOrder<T> {
+//   const factory NoteOrder.title(OrderType orderType) = NoteOrderTitle;
+//   const factory NoteOrder.date(OrderType orderType) = NoteOrderDate;
+//   const factory NoteOrder.color(OrderType orderType) = NoteOrderColor;
+// }
+//
+// class NoteOrderTitle<T> implements NoteOrder<T> {
+//   final OrderType orderType;
+//   const NoteOrderTitle(this.orderType);
+// }
+//
+// class NoteOrderDate<T> implements NoteOrder<T> {
+//   final OrderType orderType;
+//   const NoteOrderDate(this.orderType);
+// }
+//
+// class NoteOrderColor<T> implements NoteOrder<T> {
+//   final OrderType orderType;
+//   const NoteOrderColor(this.orderType);
+// }
+
+import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:note_app/domain/util/order_type.dart';
 
-sealed class NoteOrder<T> {
-  factory NoteOrder.title(OrderType orderType) = NoteOrderTitle;
-  factory NoteOrder.date(OrderType orderType) = NoteOrderDate;
-  factory NoteOrder.color(OrderType orderType) = NoteOrderColor;
-}
+part 'note_order.freezed.dart';
 
-class NoteOrderTitle<T> implements NoteOrder<T> {
-  final OrderType orderType;
-  NoteOrderTitle(this.orderType);
-}
-
-class NoteOrderDate<T> implements NoteOrder<T> {
-  final OrderType orderType;
-  NoteOrderDate(this.orderType);
-}
-
-class NoteOrderColor<T> implements NoteOrder<T> {
-  final OrderType orderType;
-  NoteOrderColor(this.orderType);
+@freezed
+abstract class NoteOrder with _$NoteOrder {
+  const factory NoteOrder.title(OrderType orderType) = NoteOrderTitle;
+  const factory NoteOrder.date(OrderType orderType) = NoteOrderDate;
+  const factory NoteOrder.color(OrderType orderType) = NoteOrderColor;
 }
