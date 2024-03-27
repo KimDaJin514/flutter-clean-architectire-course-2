@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:note_app/domain/model/note.dart';
+import 'package:note_app/presentation/add_edit_note/add_edit_note_event.dart';
+import 'package:note_app/presentation/add_edit_note/add_edit_note_viewmodel.dart';
 import 'package:note_app/ui/colors.dart';
+import 'package:provider/provider.dart';
 
 class AddEditNoteScreen extends StatefulWidget {
-  const AddEditNoteScreen({super.key});
+  final Note? note;
+  const AddEditNoteScreen({super.key, this.note});
 
   @override
   State<AddEditNoteScreen> createState() => _AddEditNoteScreenState();
@@ -20,8 +25,6 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
     illusion
   ];
 
-  Color _color = roseBud;
-
   @override
   void dispose() {
     _titleCtrl.dispose();
@@ -31,16 +34,32 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<AddEditNoteViewModel>();
+
     return Scaffold(
-      backgroundColor: _color,
+      appBar: AppBar(),
+      backgroundColor: Color(viewModel.color),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          if (_titleCtrl.text.isEmpty || _contentCtrl.text.isEmpty) {
+            const snackBar = SnackBar(content: Text('제목이나 내용이 비어있습니다.'));
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+            return;
+          }
+
+          viewModel.onEvent(AddEditNoteEvent.saveNote(
+            widget.note?.id,
+            _titleCtrl.text,
+            _contentCtrl.text,
+          ));
+        },
         child: const Icon(Icons.save),
       ),
       body: SafeArea(
         child: AnimatedContainer(
           padding: const EdgeInsets.all(16),
-          color: _color,
+          color: Color(viewModel.color),
           duration: const Duration(milliseconds: 500),
           child: Column(
             children: [
@@ -49,11 +68,12 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
                 children: noteColors
                     .map(
                       (color) => GestureDetector(
-                        child: _buildBackColor(color: color, selected: (_color == color)),
+                        child: _buildBackColor(
+                            color: color,
+                            selected: (viewModel.color == color.value)),
                         onTap: () {
-                          setState(() {
-                            _color = color;
-                          });
+                          viewModel.onEvent(
+                              AddEditNoteEvent.changeColor(color.value));
                         },
                       ),
                     )
