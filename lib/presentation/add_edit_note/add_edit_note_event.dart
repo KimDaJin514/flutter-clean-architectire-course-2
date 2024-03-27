@@ -1,9 +1,16 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+sealed class AddEditNoteEvent<T> {
+  factory AddEditNoteEvent.changeColor(int color) = ChangeColor;
+  factory AddEditNoteEvent.saveNote(int? id, String title, String content) = SaveNote;
+}
 
-part 'add_edit_note_event.freezed.dart';
+class ChangeColor<T> implements AddEditNoteEvent<T> {
+  final int color;
+  ChangeColor(this.color);
+}
 
-@freezed
-class AddEditNoteEvent with _$AddEditNoteEvent {
-  const factory AddEditNoteEvent.changeColor(int color) = ChangeColor;
-  const factory AddEditNoteEvent.saveNote(int? id, String title, String content) = SaveNote;
+class SaveNote<T> implements AddEditNoteEvent<T> {
+  final int? id;
+  final String title;
+  final String content;
+  SaveNote(this.id, this.title, this.content);
 }

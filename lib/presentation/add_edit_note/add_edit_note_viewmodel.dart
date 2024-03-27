@@ -20,10 +20,12 @@ class AddEditNoteViewModel with ChangeNotifier {
   AddEditNoteViewModel(this.repository);
 
   void onEvent(AddEditNoteEvent event) {
-    event.when(
-      changeColor: _changeColor,
-      saveNote: _saveNote,
-    );
+    switch(event) {
+      case ChangeColor():
+        _changeColor(event.color);
+      case SaveNote():
+        _saveNote(event.id, event.title, event.content);
+    }
   }
 
   Future<void> _changeColor(int color) async {
@@ -33,7 +35,7 @@ class AddEditNoteViewModel with ChangeNotifier {
 
   Future<void> _saveNote(int? id, String title, String content) async {
     if(title.isEmpty || content.isEmpty) {
-      _eventController.add(const AddEditNoteUiEvent.showSnackBar('제목이나 내용이 비어있습니다.'));
+      _eventController.add(AddEditNoteUiEvent.showSnackBar('제목이나 내용이 비어있습니다.'));
       return;
     }
 
@@ -58,6 +60,6 @@ class AddEditNoteViewModel with ChangeNotifier {
       );
     }
 
-    _eventController.add(const AddEditNoteUiEvent.saveNote());
+    _eventController.add(AddEditNoteUiEvent.saveNote());
   }
 }

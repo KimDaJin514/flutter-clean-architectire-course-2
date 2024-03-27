@@ -36,7 +36,7 @@ class NotesScreen extends StatelessWidget {
                   builder: (context) => const AddEditNoteScreen()));
 
           if (isSaved != null && isSaved) {
-            viewModel.onEvent(const NotesEvent.loadNotes());
+            viewModel.onEvent(NotesEvent.loadNotes());
           }
         },
         child: const Icon(Icons.add),
@@ -57,7 +57,7 @@ class NotesScreen extends StatelessWidget {
                           ));
 
                       if (isSaved != null && isSaved) {
-                        viewModel.onEvent(const NotesEvent.loadNotes());
+                        viewModel.onEvent(NotesEvent.loadNotes());
                       }
                     },
                     child: NoteItem(
@@ -70,7 +70,7 @@ class NotesScreen extends StatelessWidget {
                           action: SnackBarAction(
                             label: '취소',
                             onPressed: () {
-                              viewModel.onEvent(const NotesEvent.restoreNote());
+                              viewModel.onEvent(NotesEvent.restoreNote());
                             },
                           ),
                         );

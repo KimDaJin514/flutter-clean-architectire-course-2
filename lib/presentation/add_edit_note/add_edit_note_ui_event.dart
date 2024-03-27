@@ -1,9 +1,13 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+sealed class AddEditNoteUiEvent<T> {
+  factory AddEditNoteUiEvent.saveNote() = SavedNote;
+  factory AddEditNoteUiEvent.showSnackBar(String msg) = ShowSnackBar;
+}
 
-part 'add_edit_note_ui_event.freezed.dart';
+class SavedNote<T> implements AddEditNoteUiEvent<T> {
+  SavedNote();
+}
 
-@freezed
-class AddEditNoteUiEvent with _$AddEditNoteUiEvent {
-  const factory AddEditNoteUiEvent.saveNote() = SaveNote;
-  const factory AddEditNoteUiEvent.showSnackBar(String msg) = ShowSnackBar;
+class ShowSnackBar<T> implements AddEditNoteUiEvent<T> {
+  final String msg;
+  ShowSnackBar(this.msg);
 }

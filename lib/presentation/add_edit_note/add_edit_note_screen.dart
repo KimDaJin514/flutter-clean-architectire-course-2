@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:note_app/domain/model/note.dart';
 import 'package:note_app/presentation/add_edit_note/add_edit_note_event.dart';
+import 'package:note_app/presentation/add_edit_note/add_edit_note_ui_event.dart';
 import 'package:note_app/presentation/add_edit_note/add_edit_note_viewmodel.dart';
 import 'package:note_app/ui/colors.dart';
 import 'package:provider/provider.dart';
@@ -43,15 +44,13 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
       final viewModel = context.read<AddEditNoteViewModel>();
 
       _streamSubscription = viewModel.eventStream.listen((event) {
-        event.when(
-          saveNote: () {
+        switch(event) {
+          case SavedNote():
             Navigator.pop(context, true);
-          },
-          showSnackBar: (String msg) {
-            final snackBar = SnackBar(content: Text(msg));
+          case ShowSnackBar():
+            final snackBar = SnackBar(content: Text(event.msg));
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          },
-        );
+        }
       });
     });
   }
