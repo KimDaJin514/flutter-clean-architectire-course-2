@@ -4,13 +4,20 @@ import 'package:note_app/domain/use_case/add_note_use_case.dart';
 import 'package:note_app/domain/use_case/delete_notes_use_case.dart';
 import 'package:note_app/domain/use_case/get_notes_use_case.dart';
 import 'package:note_app/domain/use_case/use_cases.dart';
+import 'package:note_app/domain/util/note_order.dart';
+import 'package:note_app/domain/util/order_type.dart';
 import 'package:note_app/presentation/notes/note_state.dart';
 import 'package:note_app/presentation/notes/notes_event.dart';
 
 class NotesViewModel with ChangeNotifier {
   final UseCases useCases;
 
-  NoteState _state = NoteState();
+  NoteState _state = NoteState(
+    order: NoteOrder.date(
+      OrderType.descending(),
+    ),
+  );
+
   NoteState get state => _state;
 
   Note? _recentlyDeletedNote;
@@ -20,7 +27,7 @@ class NotesViewModel with ChangeNotifier {
   }
 
   void onEvent(NotesEvent event) {
-    switch(event) {
+    switch (event) {
       case LoadNotes():
         _loadNotes();
       case DeleteNote():
@@ -31,7 +38,7 @@ class NotesViewModel with ChangeNotifier {
   }
 
   Future<void> _loadNotes() async {
-    List<Note> notes = await useCases.getNotes();
+    List<Note> notes = await useCases.getNotes(state.order);
 
     _state = state.copyWith(notes: notes);
 
@@ -46,7 +53,7 @@ class NotesViewModel with ChangeNotifier {
   }
 
   Future<void> _restoreNote() async {
-    if(_recentlyDeletedNote != null) {
+    if (_recentlyDeletedNote != null) {
       await useCases.addNote(_recentlyDeletedNote!);
       _recentlyDeletedNote = null;
 
