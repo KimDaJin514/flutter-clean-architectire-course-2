@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:note_app/domain/model/note.dart';
 import 'package:note_app/domain/util/order_type.dart';
 
 import '../../../domain/util/note_order.dart';
@@ -21,16 +22,14 @@ class OrderSection extends StatelessWidget {
         Row(
           children: [
             Radio<NoteOrder>(
-              value: NoteOrder.title(noteOrder.orderType),
+              value: NoteOrder.date(noteOrder.orderType),
               groupValue: noteOrder,
               onChanged: (NoteOrder? value) {
-                onOrderChanged(NoteOrder.title(noteOrder.orderType));
+                onOrderChanged(NoteOrder.date(noteOrder.orderType));
               },
               activeColor: Colors.white,
             ),
-            const Text(
-              '제목'
-            ),
+            const Text('제목'),
             Radio<NoteOrder>(
               value: NoteOrder.date(noteOrder.orderType),
               groupValue: noteOrder,
@@ -39,9 +38,7 @@ class OrderSection extends StatelessWidget {
               },
               activeColor: Colors.white,
             ),
-            const Text(
-              '날짜'
-            ),
+            const Text('날짜'),
             Radio<NoteOrder>(
               value: NoteOrder.color(noteOrder.orderType),
               groupValue: noteOrder,
@@ -50,9 +47,7 @@ class OrderSection extends StatelessWidget {
               },
               activeColor: Colors.white,
             ),
-            const Text(
-              '색상'
-            )
+            const Text('색상')
           ],
         ),
         Row(

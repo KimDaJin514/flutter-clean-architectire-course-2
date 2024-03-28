@@ -1,6 +1,6 @@
 import 'package:note_app/domain/model/note.dart';
 
-abstract class NoteRepository {
+abstract interface class NoteRepository {
   Future<List<Note>> getNotes();
   Future<Note?> getNoteById(int id);
   Future<void> insertNote(Note note);

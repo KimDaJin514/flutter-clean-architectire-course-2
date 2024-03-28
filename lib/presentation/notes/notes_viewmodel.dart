@@ -1,8 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:note_app/domain/model/note.dart';
-import 'package:note_app/domain/use_case/add_note_use_case.dart';
-import 'package:note_app/domain/use_case/delete_notes_use_case.dart';
-import 'package:note_app/domain/use_case/get_notes_use_case.dart';
 import 'package:note_app/domain/use_case/use_cases.dart';
 import 'package:note_app/domain/util/note_order.dart';
 import 'package:note_app/domain/util/order_type.dart';
