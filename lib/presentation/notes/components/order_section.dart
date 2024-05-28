@@ -22,10 +22,11 @@ class OrderSection extends StatelessWidget {
         Row(
           children: [
             Radio<NoteOrder>(
-              value: NoteOrder.date(noteOrder.orderType),
+              value: NoteOrder.title(noteOrder.orderType),
               groupValue: noteOrder,
               onChanged: (NoteOrder? value) {
-                onOrderChanged(NoteOrder.date(noteOrder.orderType));
+                onOrderChanged(value!);
+                // onOrderChanged(NoteOrder.title(noteOrder.orderType));
               },
               activeColor: Colors.white,
             ),
@@ -34,7 +35,8 @@ class OrderSection extends StatelessWidget {
               value: NoteOrder.date(noteOrder.orderType),
               groupValue: noteOrder,
               onChanged: (NoteOrder? value) {
-                onOrderChanged(NoteOrder.date(noteOrder.orderType));
+                onOrderChanged(value!);
+                // onOrderChanged(NoteOrder.date(noteOrder.orderType));
               },
               activeColor: Colors.white,
             ),
@@ -43,7 +45,8 @@ class OrderSection extends StatelessWidget {
               value: NoteOrder.color(noteOrder.orderType),
               groupValue: noteOrder,
               onChanged: (NoteOrder? value) {
-                onOrderChanged(NoteOrder.color(noteOrder.orderType));
+                onOrderChanged(value!);
+                // onOrderChanged(NoteOrder.color(noteOrder.orderType));
               },
               activeColor: Colors.white,
             ),
@@ -56,9 +59,10 @@ class OrderSection extends StatelessWidget {
               value: const OrderType.ascending(),
               groupValue: noteOrder.orderType,
               onChanged: (OrderType? value) {
-                onOrderChanged(noteOrder.copyWith(
-                  orderType: const OrderType.ascending()
-                ));
+                // onOrderChanged(noteOrder.copyWith(
+                //   orderType: const OrderType.ascending()
+                // ));
+                onOrderChanged(noteOrder.copyWith(orderType: value!));
               },
               activeColor: Colors.white,
             ),
@@ -69,9 +73,10 @@ class OrderSection extends StatelessWidget {
               value: const OrderType.descending(),
               groupValue: noteOrder.orderType,
               onChanged: (OrderType? value) {
-                onOrderChanged(noteOrder.copyWith(
-                  orderType: const OrderType.descending()
-                ));
+                // onOrderChanged(noteOrder.copyWith(
+                //   orderType: const OrderType.descending()
+                // ));
+                onOrderChanged(noteOrder.copyWith(orderType: value!));
               },
               activeColor: Colors.white,
             ),
